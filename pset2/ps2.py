@@ -123,7 +123,7 @@ class RectangularRoom(object):
         x = math.floor(pos.getX())
         y = math.floor(pos.getY())
         
-        if x <= self.width and y <= self.height:
+        if x < self.width and y < self.height:
             return (x * self.height) + y
         else: 
             return -1
@@ -190,7 +190,10 @@ class Robot(object):
         room:  a RectangularRoom object.
         speed: a float (speed > 0)
         """
-        raise NotImplementedError
+        self.room = room
+        self.speed = speed
+        self.position = Position(0,0)
+        self.direction = 0
 
     def getRobotPosition(self):
         """
@@ -198,7 +201,7 @@ class Robot(object):
 
         returns: a Position object giving the robot's position.
         """
-        raise NotImplementedError
+        return self.position
     
     def getRobotDirection(self):
         """
@@ -207,7 +210,7 @@ class Robot(object):
         returns: an integer d giving the direction of the robot as an angle in
         degrees, 0 <= d < 360.
         """
-        raise NotImplementedError
+        return self.direction
 
     def setRobotPosition(self, position):
         """
@@ -215,7 +218,7 @@ class Robot(object):
 
         position: a Position object.
         """
-        raise NotImplementedError
+        self.position = position
 
     def setRobotDirection(self, direction):
         """
@@ -223,7 +226,7 @@ class Robot(object):
 
         direction: integer representing an angle in degrees
         """
-        raise NotImplementedError
+        self.direction = direction
 
     def updatePositionAndClean(self):
         """
@@ -340,6 +343,22 @@ def showPlot2(title, x_label, y_label):
     pylab.ylabel(y_label)
     pylab.show()
 
+
+room = RectangularRoom(2,2)
+
+print(room.isPositionInRoom(Position(0.00, 2.00)))
+
+#print(room.isPositionInRoom(Position(4.00, 4.00)))
+#print(room.isPositionInRoom(Position(2.00, 8.00)))
+#print(room.isPositionInRoom(Position(5.00, 4.00)))
+#print(room.isPositionInRoom(Position(1.00, 2.00)))
+#print(room.isPositionInRoom(Position(3.00, 3.00)))
+
+#Random position 0: (4.00, 4.00)
+#Random position 1: (2.00, 8.00)
+#Random position 2: (5.00, 4.00)
+#Random position 3: (1.00, 2.00)
+#Random position 4: (3.00, 3.00)
 
 # === Problem 6
 # NOTE: If you are running the simulation, you will have to close it 
