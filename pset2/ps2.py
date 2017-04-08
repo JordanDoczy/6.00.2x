@@ -122,8 +122,8 @@ class RectangularRoom(object):
         """
         x = math.floor(pos.getX())
         y = math.floor(pos.getY())
-        
-        if x < self.width and y < self.height:
+
+        if 0 <= x < self.width and 0 <= y < self.height:
             return (x * self.height) + y
         else: 
             return -1
@@ -192,9 +192,10 @@ class Robot(object):
         """
         self.room = room
         self.speed = speed
-        self.position = Position(0,0)
-        self.direction = 0
-
+        self.direction = random.random() * 360
+        self.position = self.room.getRandomPosition()
+        self.room.cleanTileAtPosition(self.position)
+        
     def getRobotPosition(self):
         """
         Return the position of the robot.
@@ -254,11 +255,25 @@ class StandardRobot(Robot):
         Move the robot to a new position and mark the tile it is on as having
         been cleaned.
         """
-        raise NotImplementedError
+        position = self.position
+        direction = self.direction
+        speed = self.speed
+        room = self.room
+        
+        while True:
+            position = self.position.getNewPosition(direction, speed)
+            if room.isPositionInRoom(position):
+                self.direction = direction
+                self.position = position
+                self.room.cleanTileAtPosition(self.position)
+
+                break
+
+            direction = random.random() * 360
 
 
 # Uncomment this line to see your implementation of StandardRobot in action!
-##testRobotMovement(StandardRobot, RectangularRoom)
+#testRobotMovement(StandardRobot, RectangularRoom)
 
 
 # === Problem 4
@@ -344,9 +359,12 @@ def showPlot2(title, x_label, y_label):
     pylab.show()
 
 
-room = RectangularRoom(2,2)
-
-print(room.isPositionInRoom(Position(0.00, 2.00)))
+testRobotMovement(StandardRobot, RectangularRoom)
+#room = RectangularRoom(8,12)
+#robot = StandardRobot(room, 0.76)
+#position = Position(2.15, -9.44)
+#print(position)
+#print(room.isPositionInRoom(position))
 
 #print(room.isPositionInRoom(Position(4.00, 4.00)))
 #print(room.isPositionInRoom(Position(2.00, 8.00)))
